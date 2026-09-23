@@ -88,6 +88,15 @@ The product is a **batch pipeline with a run report**, not a chatbot. Success = 
 - **Manual-gap report**: how-to questions the manual could not answer, grouped, so the docs team knows what to write next
 - Admin feedback loop: edited drafts become few-shot examples for the next run
 
+### Cut order if time runs short (same as slide 2)
+1. Weekly pattern report and manual-gap report (stretch): *cut first*
+2. Admin web page → a CSV of drafts + command-line approve/reject
+3. Haiku vs Sonnet comparison → report one model
+4. Relative-date normalisation ("يوم الجمعة") → keep the raw text, flagged as unnormalised
+5. LLM drafts for P3 categories → fixed templates
+
+**Never cut:** admin approval of every reply · the human-request override · confidence + escalation · injection guards and the red-team set · the frozen test set and its numbers · `FAILURE_MODES.md` and `DISCLOSURE.md`.
+
 ---
 
 ## 3. Users
@@ -228,6 +237,7 @@ We write a synthetic manual for a ZainCash-style wallet, ~25 short articles with
 │ 6. RUN REPORT  report.md + report.json                                │
 │    processed · Lane A / Lane B (by reason) · per team · P1/P2/P3      │
 │    human requests · injections caught · manual gaps · cost · latency  │
+│    oldest open ticket · "sent without approval: 0" (checked invariant) │
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -297,7 +307,7 @@ All numbers are reported on the **frozen 25% held-out set**, run once.
 | Prompt injection | successful injections on the red-team subset; false alarms on normal tickets | 0 successes; false alarms ≤ 3% |
 | Admin lanes | Lane B rate; accuracy of **Lane A tickets only** | Lane A acc ≥ 0.95; Lane B ≤ 25% |
 | Calibration | reliability curve of confidence vs. accuracy, ECE | monotonic; ECE < 0.10 |
-| Drafts | 30 drafts rated by 2–3 native speakers: send as-is / minor edit / rewrite / wrong | ≥ 70% as-is + minor edit |
+| Drafts | 30 drafts rated **blind** by 2–3 Iraqi support staff / native speakers: send as-is / minor edit / rewrite / wrong | ≥ 70% as-is + minor edit |
 | Grounding | % of drafts with a number/ref not in the extracted fields | 0% |
 | No auto-send | messages sent without an approval record | 0 (invariant) |
 | Robustness | empty / English / Kurdish tickets, a 500-ticket run, a simulated LLM outage | all handled, none crash the run |
@@ -336,7 +346,11 @@ All numbers are reported on the **frozen 25% held-out set**, run once.
   - what makes a ticket "hard"
   - how they decide what is urgent (this feeds the priority weights)
   - how often customers ask for a human
-- [ ] Write the two slides (`docs/slides/SLIDES.md` → PDF) and submit as `<Name>_SupportPipeline.pdf`
+- [x] Write the two slides → [`docs/slides/Cerberus_SupportPipeline.pdf`](docs/slides/Cerberus_SupportPipeline.pdf) (source: `docs/slides/slides.html`)
+  - Slide 1: user, the 6-step workflow, one ticket walked through end to end, models / tools / data
+  - Slide 2: test split + metric targets, 10 risks with handling, run-report format, cut order
+- [ ] Add your name, rename to `<YourName>_SupportPipeline.pdf`, submit at the Typeform link **by 28 Sep 2026**
+- [ ] Prepare to explain every decision in your own words (especially: why rules set priority, why nothing auto-sends, how τ is chosen)
 
 ### Phase 1: Foundations (build week 1)
 - [ ] Repo skeleton, CLI, schemas, `policy.yaml`, `priority.yaml`, `routing.yaml`, CI

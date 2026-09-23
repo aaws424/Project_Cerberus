@@ -27,14 +27,14 @@ tickets ─► guard ─► understand ─► priority score ─► decide ─�
 🟡 **Selection round** — roadmap and two-slide proposal. Build stage starts after 28 Sep 2026.
 
 - [ROADMAP.md](ROADMAP.md) — goal, scope, data plan, architecture, evaluation plan, failure modes, timeline
-- [docs/slides/SLIDES.md](docs/slides/SLIDES.md) — the two selection-round slides
+- [docs/slides/Cerberus_SupportPipeline.pdf](docs/slides/Cerberus_SupportPipeline.pdf) — the two selection-round slides (source: [slides.html](docs/slides/slides.html), notes: [SLIDES.md](docs/slides/SLIDES.md))
 
 ## Planned quick start (build stage)
 
 ```bash
 python -m cerberus run  --in data/dev.jsonl --out runs/latest   # process a batch, write report
 python -m cerberus eval --test data/test.jsonl                  # metrics on the frozen held-out set
-python -m cerberus review                                       # open the human review queue
+python -m cerberus admin                                        # open the admin approval queue
 ```
 
 ## Principles
