@@ -24,16 +24,17 @@ tickets ─► guard ─► understand ─► priority score ─► decide ─�
 
 ## Status
 
-🟡 **Selection round** — roadmap and two-slide proposal. Build stage starts after 28 Sep 2026.
+🟡 **Build stage.** Selected after the two-slide round. Design brief due 22 Oct 2026, MVP 08 Nov 2026.
 
-- [ROADMAP.md](ROADMAP.md) — goal, scope, data plan, architecture, evaluation plan, failure modes, timeline
-- [docs/slides/Cerberus_SupportPipeline.pdf](docs/slides/Cerberus_SupportPipeline.pdf) — the two selection-round slides (source: [slides.html](docs/slides/slides.html), notes: [SLIDES.md](docs/slides/SLIDES.md))
+- [ROADMAP.md](ROADMAP.md): goal, scope, data plan, architecture, evaluation plan, failure modes, week-by-week plan
+- [Design brief (5 slides)](docs/design_brief/AawsOdayTami_SupportPipelineAutomation.pdf): user, architecture, models/tools/data, test plan, risks and plan (source: [design_brief.html](docs/design_brief/design_brief.html))
+- [Selection-round slides](<docs/slides/Aaws Oday Tami Support pipeline.pdf>)
 
 ## Planned quick start (build stage)
 
 ```bash
 python -m cerberus run  --in data/dev.jsonl --out runs/latest   # process a batch, write report
-python -m cerberus eval --test data/test.jsonl                  # metrics on the frozen held-out set
+python -m cerberus eval --split test                            # metrics on a frozen split (test now, held-out once at the end)
 python -m cerberus admin                                        # open the admin approval queue
 ```
 
@@ -48,7 +49,7 @@ python -m cerberus admin                                        # open the admin
 
 ## Disclosure
 
-Maintained in `DISCLOSURE.md` from the build stage. Planning so far used Claude (Anthropic) via Claude Code.
+Maintained in `DISCLOSURE.md` from the build stage. The pipeline runs on free-tier models (Groq, Google AI Studio, Mistral, local Ollama), and every run logs the provider and model it used. Planning, documents and code are written with help from Claude Code (Anthropic) as the AI coding assistant.
 
 ## License
 

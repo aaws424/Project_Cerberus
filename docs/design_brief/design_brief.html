@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cerberus Design Brief</title>
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+  :root{
+    --ink:#10262B; --petrol:#0E4A55; --petrol2:#16606D; --mist:#E9F1F2; --line:#C9D8DB;
+    --muted:#5A6E72; --amber:#D98A1E; --amberbg:#FDF1DE; --green:#23845A; --greenbg:#E3F3EA;
+    --red:#B9472F; --redbg:#FBE7E2; --llm:#7A3F8C; --llmbg:#F4ECF7; --paper:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff}
+  body{font-family:"Segoe UI",Tahoma,Arial,sans-serif;color:var(--ink);font-size:11px;line-height:1.36}
+  a{color:var(--petrol2)}
+  .slide{width:1280px;height:720px;position:relative;overflow:hidden;background:var(--paper);page-break-after:always;padding:20px 26px 0 26px}
+  .slide:last-child{page-break-after:auto}
+  .head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:12px}
+  .tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.12em;color:#fff;background:var(--petrol);border-radius:10px;padding:2px 9px;margin-bottom:5px}
+  h1{font-size:25px;font-weight:700;line-height:1.1;color:var(--petrol)}
+  h1 em{font-style:normal;color:var(--amber)}
+  .headr{text-align:right;color:var(--muted);font-size:10.5px;line-height:1.4}
+  .headr b{color:var(--ink)}
+  h2{font-size:13px;font-weight:700;color:var(--petrol);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;flex:none;width:19px;height:19px;border-radius:50%;background:var(--petrol);color:#fff;font-size:10px}
+  h3{font-size:11px;font-weight:700;color:var(--ink);margin:6px 0 2px}
+  .card{background:var(--mist);border-radius:8px;padding:10px 12px}
+  .card.w{background:#fff;border:1.2px solid var(--line)}
+  .muted{color:var(--muted)}
+  ul{padding-left:14px} li{margin-bottom:2.5px}
+  ol{padding-left:16px} ol li{margin-bottom:2.5px}
+  .ar{direction:rtl;text-align:right;font-size:12px;line-height:1.5}
+  bdi{font-size:1.05em;white-space:nowrap}
+  .mono{font-family:Consolas,"Courier New",monospace;font-size:10px}
+  .chip{display:inline-block;border-radius:9px;padding:0 7px;font-size:9.5px;font-weight:700;line-height:16px;white-space:nowrap}
+  .cA{background:var(--greenbg);color:var(--green)} .cB{background:var(--amberbg);color:#9A5B06}
+  .cR{background:var(--redbg);color:var(--red)} .cL{background:var(--llmbg);color:var(--llm)} .cP{background:#DDEBEE;color:var(--petrol)}
+  .foot{position:absolute;left:26px;right:26px;bottom:9px;display:flex;justify-content:space-between;color:var(--muted);font-size:9.5px}
+  table{width:100%;border-collapse:collapse;font-size:10.5px}
+  th{text-align:left;font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:3px 6px;border-bottom:1.5px solid var(--petrol)}
+  td{padding:4px 6px;border-bottom:1px solid #E1EAEC;vertical-align:top}
+  td.tg{font-weight:700;color:var(--petrol)}
+  .g2{display:grid;gap:16px}
+
+  /* slide 1 */
+  .loop{display:flex;gap:0;margin:6px 0 8px}
+  .loop div{flex:1;background:#fff;border:1.2px solid var(--line);padding:5px 7px;font-size:10.5px;position:relative;text-align:center}
+  .loop div:first-child{border-radius:7px 0 0 7px} .loop div:last-child{border-radius:0 7px 7px 0}
+  .loop b{display:block;color:var(--petrol);font-size:10px}
+  .tax{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}
+  .tax div{background:#fff;border:1.2px solid var(--line);border-radius:7px;padding:5px 7px;font-size:10px;line-height:1.3}
+  .tax .c{font-weight:700;color:var(--petrol);font-family:Consolas,monospace;font-size:10px}
+  .tax .ar{font-size:11px;line-height:1.35;margin:1px 0}
+  .tax .r{color:var(--muted);font-size:9.5px}
+  .tax .p{float:right;font-weight:700;color:var(--amber)}
+  .good li{list-style:none;position:relative;padding-left:4px}
+  .good li::before{content:"✓";position:absolute;left:-12px;color:var(--green);font-weight:700}
+
+  /* slide 2 */
+  svg text{font-family:"Segoe UI",Tahoma,Arial,sans-serif}
+  .rule{display:flex;gap:6px;margin-bottom:3px;font-size:10.5px}
+  .rule .k{flex:none;width:16px;height:16px;border-radius:50%;background:var(--amber);color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .rule .k.g{background:var(--green)}
+  .tk{background:#fff;border:1px solid var(--line);border-radius:7px;padding:4px 9px;margin:3px 0}
+
+  /* slide 3 */
+  .steps{display:flex;flex-direction:column;gap:5px}
+  .st{display:grid;grid-template-columns:26px 1fr;gap:8px;background:#fff;border:1.2px solid var(--line);border-radius:8px;padding:6px 9px}
+  .st .num{width:24px;height:24px;border-radius:50%;background:var(--petrol);color:#fff;font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center}
+  .st.llm .num{background:var(--llm)} .st.hum .num{background:var(--amber)}
+  .st b.t{color:var(--petrol)}
+  .json{background:var(--ink);color:#D6E6E8;border-radius:8px;padding:7px 10px;font-family:Consolas,monospace;font-size:9.6px;line-height:1.45;white-space:pre}
+  .json .k{color:#8FD1C4} .json .s{color:#F2C27B}
+
+  /* slide 4 */
+  .split{display:flex;align-items:stretch;margin:2px 0 9px;font-size:10.5px}
+  .split div{padding:6px 9px;color:#fff;display:flex;flex-direction:column;justify-content:center}
+  .split b{font-size:13px}
+  .split .s1{background:var(--petrol2);border-radius:7px 0 0 7px;flex:1}
+  .split .s2{background:var(--petrol);flex:2}
+  .split .s3{background:#3E7F8A;flex:1.4}
+  .split .s4{background:var(--amber);border-radius:0 7px 7px 0;flex:1.6}
+
+  /* slide 5 */
+  .weeks{display:flex;flex-direction:column;gap:6px}
+  .wk{display:grid;grid-template-columns:92px 1fr;gap:10px;background:#fff;border:1.2px solid var(--line);border-radius:8px;padding:7px 10px}
+  .wk .d{font-weight:700;color:var(--petrol);font-size:11px;line-height:1.25}
+  .wk .d span{display:block;color:var(--muted);font-weight:600;font-size:10px}
+  .wk .exit{margin-top:4px;font-size:10.5px;color:#135C3D;background:var(--greenbg);border-radius:5px;padding:2px 7px;display:block;width:fit-content}
+  .wk.mvp{border-color:var(--amber);background:#FFFAF2}
+  .risk td:first-child{width:180px;font-weight:700}
+  .tl{position:absolute;left:26px;right:26px;bottom:30px;display:grid;grid-template-columns:1fr 1fr 1fr 1.6fr 1.6fr 1.6fr;gap:0;border-top:2px solid var(--petrol)}
+  .tli{position:relative;padding:12px 10px 0 0;font-size:10.5px;color:var(--ink)}
+  .tli::before{content:"";position:absolute;top:-7px;left:0;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid var(--petrol)}
+  .tli b{display:block;color:var(--petrol);font-size:11.5px}
+  .tli.done::before{background:var(--petrol)}
+  .tli.now::before{background:var(--amber);border-color:var(--amber)}
+  .tli.now b{color:var(--amber)}
+  .tli.key::before{background:var(--green);border-color:var(--green)}
+  .s4 table{font-size:12px} .s4 td{padding:7.5px 8px} .s4 .card{font-size:11.5px}
+  .s5 table{font-size:11.5px} .s5 td{padding:7px 7px} .s5 .wk{font-size:11.5px;padding:9px 11px} .s5 .weeks{gap:8px}
+  .s3 table{font-size:11px} .s3 td{padding:5px 6px}
+  .q4{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+  .q4 div{background:#fff;border:1px solid var(--line);border-radius:7px;padding:5px 8px;font-size:10px}
+  .q4 .ar{font-size:12px;margin-bottom:2px}
+</style>
+</head>
+<body>
+
+<!-- ============================================================ 1. USER & PROBLEM -->
+<section class="slide">
+  <div class="head">
+    <div>
+      <span class="tag">DESIGN BRIEF · 1 / 5 · USER &amp; PROBLEM</span>
+      <h1>Cerberus: <em>the AI prepares</em> the support queue, a human decides</h1>
+    </div>
+    <div class="headr"><b>Aaws Oday Tami · Topic 06 Support Pipeline Automation</b><br>
+      GitHub: <a href="https://github.com/aaws424/Project_Cerberus"><b>github.com/aaws424/Project_Cerberus</b></a></div>
+  </div>
+
+  <div class="g2" style="grid-template-columns:1fr 420px">
+    <div>
+      <div class="card">
+        <h2><span class="n">1</span>The user: Noor, support agent at an Iraqi mobile-wallet company, Baghdad</h2>
+        <p>Noor works the support queue. Tickets arrive from <b>in-app chat, WhatsApp and Telegram</b>, almost all in <b>Iraqi dialect</b>, often mixed with English (<bdi dir="rtl">الـ OTP ما وصل</bdi>) or written in Arabizi (<i>ma wasal el mablagh</i>). She handles a full queue every shift (we will measure the real volume in interviews). For <b>every</b> ticket she repeats the same loop:</p>
+        <div class="loop">
+          <div><b>1 · Read</b>a paragraph of dialect</div>
+          <div><b>2 · Work out the issue</b>transfer? login? agent?</div>
+          <div><b>3 · Dig out the facts</b>ref, amount, date</div>
+          <div><b>4 · Judge urgency</b>and pick a team</div>
+          <div><b>5 · Route or reply</b>often the same text again</div>
+        </div>
+        <h3>The problem</h3>
+        <ul>
+          <li><b>Repetition.</b> Most of the queue is a handful of issues and "how do I…" questions, answered the same way every day. The queue grows faster than the team.</li>
+          <li><b>Wrong order.</b> The queue is first-come, first-served. A 5,000,000 IQD transfer to the wrong number, still reversible for a few hours, waits behind a PIN reset.</li>
+          <li><b>Facts buried in text.</b> Refs, amounts written in words (<bdi dir="rtl">مليون ونص</bdi>) and relative dates (<bdi dir="rtl">امس بالليل</bdi>) have to be found by hand before anything can be looked up.</li>
+          <li><b>No overview.</b> <b>Haider, the team lead</b> (secondary user), cannot see what came in, what is stuck, or what is suddenly spiking.</li>
+        </ul>
+        <p style="margin-top:4px"><b>Not the user: the customer.</b> This is not a chatbot. The customer only ever receives text that a human approved.</p>
+        <h3 style="margin-top:7px">What actually lands in her queue (synthetic examples)</h3>
+        <div class="q4">
+          <div><div class="ar">السلام عليكم، دفعت فاتورة الانترنت ١٥ الف وانخصمت مني مرتين</div>bill payment · amount in Arabic digits · no ref given</div>
+          <div><div class="ar">الوكيل بالمنصور گال النظام عاطل وما رجعلي ٢٠٠ الف</div>agent dispute · place + amount buried in dialect</div>
+          <div><div style="font-size:12px;margin-bottom:2px"><i>ma wasalni el mablagh, sar 3 ayam w mahad yrid</i></div>Arabizi · money stuck 3 days · repeat contact</div>
+          <div><div style="font-size:12px;margin-bottom:2px"><i>otp not coming, tried 5 times, I want to talk to a real person</i></div>English · OTP issue · <b>asks for a human</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card w">
+        <h2><span class="n">2</span>What a good day looks like for Noor</h2>
+        <ul class="good">
+          <li>Her queue is already <b>sorted by a priority score she can read</b> (why this ticket is P1)</li>
+          <li>Routine tickets arrive with a <b>draft she sends after a minor edit</b></li>
+          <li>Hard tickets arrive marked <span class="chip cB">Needs you</span> with a one-line reason</li>
+          <li>A customer who asks for a person <b>always reaches one</b></li>
+          <li><b>Nothing reaches a customer without her click</b>, at any confidence</li>
+          <li>Haider gets a run report: volume, routing, escalations and why</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2><span class="n">3</span>A workflow, not an autonomous agent</h2>
+        <p>The steps are known in advance (classify → extract → prioritise → route → draft). Following Anthropic's <i>Building effective agents</i>, we use a <b>fixed workflow</b> (prompt chaining + routing), not an open-ended agent. <b>The LLM handles language; code makes the decisions.</b> This makes it easier to test, debug and trust.</p>
+      </div>
+      <div class="card">
+        <h2><span class="n">4</span>Checking the problem with real people</h2>
+        <p>In week 1 we interview 2–3 people who do support in Iraq (wallet, telecom, e-commerce) for 20 minutes each. We ask about their category list, the most repetitive tickets, how they judge urgency, and how often customers ask for a human. Findings go in <span class="mono">docs/USER_RESEARCH.md</span> and adjust the categories and priority weights below.</p>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="margin-top:10px"><span class="n">5</span>Ticket categories (v1, to be checked in interviews) · example phrasing · team · base priority points</h2>
+  <div class="tax">
+    <div><span class="p">30</span><span class="c">failed_transfer</span><div class="ar">حولت وللحد الآن ما وصلت</div><span class="r">Payments Ops</span></div>
+    <div><span class="p">35</span><span class="c">wrong_recipient</span><div class="ar">غلطت بالرقم وحولت لغير واحد</div><span class="r">Disputes</span></div>
+    <div><span class="p">30</span><span class="c">agent_dispute</span><div class="ar">الوكيل ما سلمني الفلوس كاملة</div><span class="r">Agent network</span></div>
+    <div><span class="p">20</span><span class="c">card_issue</span><div class="ar">البطاقة انسحبت منها فلوس</div><span class="r">Cards</span></div>
+    <div><span class="p">20</span><span class="c">bill_payment</span><div class="ar">دفعت الكهرباء وما انحسبت</div><span class="r">Payments Ops</span></div>
+    <div><span class="p">20</span><span class="c">login_problem</span><div class="ar">الحساب ما دا يفتح</div><span class="r">Account security</span></div>
+    <div><span class="p">15</span><span class="c">otp_not_received</span><div class="ar">رمز التحقق ما يوصلني</div><span class="r">Account security</span></div>
+    <div><span class="p">10</span><span class="c">balance_or_fee</span><div class="ar">ليش انقص من رصيدي؟</div><span class="r">Tier-1</span></div>
+    <div><span class="p">10</span><span class="c">kyc_verification</span><div class="ar">رفعت الهوية وما توثق</div><span class="r">Compliance</span></div>
+    <div><span class="p">5</span><span class="c">how_to_question</span><div class="ar">شلون اغير الرمز السري؟</div><span class="r">Tier-1 · answered from manual</span></div>
+    <div><span class="p">—</span><span class="c">unclear</span><div class="ar">عندي مشكلة ساعدوني</div><span class="r">Needs you</span></div>
+    <div style="background:var(--mist);border-color:var(--mist)"><b>+ flags</b> on any ticket:<br>wants a human · fraud / takeover · legal threat · repeat contact · injection</div>
+  </div>
+
+  <div class="foot"><span>Aaws Oday Tami · Project Cerberus · Topic 06 Support Pipeline Automation · github.com/aaws424/Project_Cerberus</span><span>1 / 5</span></div>
+</section>
+
+<!-- ============================================================ 2. ARCHITECTURE -->
+<section class="slide">
+  <div class="head">
+    <div>
+      <span class="tag">DESIGN BRIEF · 2 / 5 · HOW IT WORKS</span>
+      <h1>End to end: <em>six steps</em>, two LLM calls, one human gate</h1>
+    </div>
+    <div class="headr"><b>A batch pipeline, not a chatbot</b><br>Runs over a queue of tickets and writes a run report</div>
+  </div>
+
+  <div class="g2" style="grid-template-columns:808px 1fr">
+    <svg viewBox="0 0 830 560" width="808" height="545" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#16606D"/></marker>
+        <marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27716"/></marker>
+        <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#23845A"/></marker>
+      </defs>
+      <!-- legend -->
+      <g font-size="11">
+        <rect x="10" y="4" width="14" height="12" rx="3" fill="#fff" stroke="#16606D" stroke-width="1.5"/><text x="30" y="14" fill="#10262B">code / rules (no LLM)</text>
+        <rect x="170" y="4" width="14" height="12" rx="3" fill="#F4ECF7" stroke="#7A3F8C" stroke-width="1.5"/><text x="190" y="14" fill="#10262B">LLM call</text>
+        <rect x="262" y="4" width="14" height="12" rx="3" fill="#FDF1DE" stroke="#C27716" stroke-width="1.5"/><text x="282" y="14" fill="#10262B">human</text>
+        <rect x="340" y="4" width="14" height="12" rx="3" fill="#E9F1F2" stroke="#9DB7BC" stroke-width="1.5"/><text x="360" y="14" fill="#10262B">data / config</text>
+      </g>
+
+      <!-- ROW 1 -->
+      <g font-size="11">
+        <rect x="10" y="32" width="140" height="104" rx="9" fill="#E9F1F2" stroke="#9DB7BC" stroke-width="1.5"/>
+        <text x="20" y="52" font-weight="700" font-size="12.5" fill="#0E4A55">Ticket batch</text>
+        <text x="20" y="70" fill="#10262B">tickets.jsonl</text>
+        <text x="20" y="86" fill="#10262B">app chat · WhatsApp</text>
+        <text x="20" y="102" fill="#10262B">· Telegram</text>
+        <text x="20" y="120" fill="#5A6E72">id, channel, text, time</text>
+
+        <rect x="170" y="32" width="140" height="104" rx="9" fill="#fff" stroke="#16606D" stroke-width="1.6"/>
+        <text x="180" y="52" font-weight="700" font-size="12.5" fill="#0E4A55">① Guard</text>
+        <text x="180" y="70">normalise Arabic,</text>
+        <text x="180" y="85">digits; dedupe</text>
+        <text x="180" y="100">regex: refs, 07xx, amounts</text>
+        <text x="180" y="115">injection scan</text>
+        <text x="180" y="130">"want a human" phrases</text>
+
+        <rect x="330" y="32" width="140" height="104" rx="9" fill="#F4ECF7" stroke="#7A3F8C" stroke-width="1.6"/>
+        <text x="340" y="52" font-weight="700" font-size="12.5" fill="#7A3F8C">② Understand</text>
+        <text x="340" y="70">1 call · strict JSON</text>
+        <text x="340" y="85">no tools · intent</text>
+        <text x="340" y="100">category + confidence</text>
+        <text x="340" y="115">fields + evidence quotes</text>
+        <text x="340" y="130">flags (fraud, human…)</text>
+
+        <rect x="490" y="32" width="140" height="104" rx="9" fill="#fff" stroke="#16606D" stroke-width="1.6"/>
+        <text x="500" y="52" font-weight="700" font-size="12.5" fill="#0E4A55">③ Score priority</text>
+        <text x="500" y="70">priority.yaml</text>
+        <text x="500" y="85">category + amount</text>
+        <text x="500" y="100">+ days stuck + risk</text>
+        <text x="500" y="115">+ repeat + waiting</text>
+        <text x="500" y="130">→ P1 / P2 / P3</text>
+
+        <rect x="650" y="32" width="140" height="104" rx="9" fill="#fff" stroke="#16606D" stroke-width="1.6"/>
+        <text x="660" y="52" font-weight="700" font-size="12.5" fill="#0E4A55">④ Decide &amp; route</text>
+        <text x="660" y="70">policy.yaml</text>
+        <text x="660" y="85">first match wins</text>
+        <text x="660" y="100">routing.yaml → team</text>
+        <text x="660" y="115">or Needs you</text>
+        <text x="660" y="130">+ one-line reason</text>
+      </g>
+      <g stroke="#16606D" stroke-width="1.8" fill="none">
+        <line x1="150" y1="84" x2="168" y2="84" marker-end="url(#ar)"/>
+        <line x1="310" y1="84" x2="328" y2="84" marker-end="url(#ar)"/>
+        <line x1="470" y1="84" x2="488" y2="84" marker-end="url(#ar)"/>
+        <line x1="630" y1="84" x2="648" y2="84" marker-end="url(#ar)"/>
+      </g>
+
+      <!-- ROW 2 -->
+      <g font-size="11">
+        <rect x="10" y="176" width="140" height="104" rx="9" fill="#E9F1F2" stroke="#9DB7BC" stroke-width="1.5"/>
+        <text x="20" y="195" font-weight="700" font-size="12" fill="#0E4A55">LLM gateway</text>
+        <text x="20" y="212">llm.py, one function</text>
+        <text x="20" y="227">Groq · Gemini · Ollama</text>
+        <text x="20" y="242">cache · retry on 429</text>
+        <text x="20" y="268" fill="#5A6E72">used by ② and ⑤</text>
+
+        <rect x="170" y="176" width="140" height="104" rx="9" fill="#E9F1F2" stroke="#9DB7BC" stroke-width="1.5"/>
+        <text x="180" y="195" font-weight="700" font-size="12" fill="#0E4A55">Config (YAML)</text>
+        <text x="180" y="212">priority · policy ·</text>
+        <text x="180" y="227">routing · reply templates</text>
+        <text x="180" y="242">a team lead can edit</text>
+        <text x="180" y="268" fill="#5A6E72">used by ③ ④ ⑤</text>
+
+        <rect x="330" y="176" width="140" height="104" rx="9" fill="#E9F1F2" stroke="#9DB7BC" stroke-width="1.5"/>
+        <text x="340" y="195" font-weight="700" font-size="12" fill="#0E4A55">App manual</text>
+        <text x="340" y="212">25 articles M-01…M-25</text>
+        <text x="340" y="227">BM25 search, top 3</text>
+        <text x="340" y="242">sections → prompt</text>
+        <text x="340" y="268" fill="#5A6E72">how-to questions only</text>
+
+        <rect x="490" y="176" width="300" height="104" rx="9" fill="#F4ECF7" stroke="#7A3F8C" stroke-width="1.6"/>
+        <text x="500" y="195" font-weight="700" font-size="12.5" fill="#7A3F8C">⑤ Prepare a reply (Iraqi dialect)</text>
+        <text x="500" y="212"><tspan font-weight="700">issue</tspan> → category template, extracted facts only;</text>
+        <text x="500" y="227">unknown details left as [[…]] for the agent</text>
+        <text x="500" y="242"><tspan font-weight="700">how-to</tspan> → only from the manual, cites the section</text>
+        <text x="500" y="258" font-weight="700" fill="#0E4A55">validator (code): no new numbers · no links ·</text>
+        <text x="500" y="273" font-weight="700" fill="#0E4A55">no refund promises · never asks for OTP/PIN</text>
+      </g>
+      <g stroke="#16606D" stroke-width="1.8" fill="none">
+        <line x1="470" y1="224" x2="488" y2="224" marker-end="url(#ar)"/>
+        <line x1="720" y1="136" x2="720" y2="174" marker-end="url(#ar)"/>
+      </g>
+      <text x="726" y="160" font-size="10" fill="#16606D" font-weight="700">routine ⑤</text>
+
+      <!-- Needs you route on right edge -->
+      <g stroke="#C27716" stroke-width="1.8" fill="none">
+        <polyline points="790,104 812,104 812,378 782,378" marker-end="url(#aa)"/>
+        <line x1="700" y1="280" x2="700" y2="334" stroke-dasharray="5 4" marker-end="url(#aa)"/>
+      </g>
+      <text x="0" y="0" font-size="10" fill="#9A5B06" font-weight="700" transform="translate(827,330) rotate(-90)">rules ①–④ → Needs you</text>
+      <text x="694" y="297" font-size="10" fill="#9A5B06" text-anchor="end">validator fails / manual gap</text>
+
+      <!-- ROW 3 queue -->
+      <rect x="330" y="304" width="460" height="134" rx="10" fill="#F7FAFA" stroke="#16606D" stroke-width="1.6"/>
+      <text x="342" y="323" font-size="12.5" font-weight="700" fill="#0E4A55">⑥ Admin queue · SQLite</text><text x="562" y="323" font-size="10.5" fill="#5A6E72">sorted by score</text>
+      <rect x="344" y="334" width="216" height="92" rx="8" fill="#E3F3EA" stroke="#23845A" stroke-width="1.5"/>
+      <text x="354" y="353" font-size="12" font-weight="700" fill="#135C3D">Ready to approve</text>
+      <text x="354" y="370" font-size="11">draft + extracted facts</text>
+      <text x="354" y="385" font-size="11">+ score breakdown</text>
+      <text x="354" y="400" font-size="11">approve · edit · reject ·</text>
+      <text x="354" y="415" font-size="11">reassign</text>
+      <rect x="574" y="334" width="206" height="92" rx="8" fill="#FDF1DE" stroke="#C27716" stroke-width="1.5"/>
+      <text x="584" y="353" font-size="12" font-weight="700" fill="#7A4904">Needs you</text>
+      <text x="584" y="370" font-size="11">reason + extracted facts</text>
+      <text x="584" y="385" font-size="11">no AI draft</text>
+      <text x="584" y="400" font-size="11">the human writes the</text>
+      <text x="584" y="415" font-size="11">reply</text>
+      <line x1="520" y1="280" x2="520" y2="332" stroke="#23845A" stroke-width="1.8" marker-end="url(#ag)"/>
+
+      <!-- human -->
+      <rect x="10" y="318" width="288" height="104" rx="9" fill="#FDF1DE" stroke="#C27716" stroke-width="1.6"/>
+      <text x="22" y="340" font-size="12.5" font-weight="700" fill="#7A4904">Noor (support agent)</text>
+      <text x="22" y="358" font-size="11">works the queue from the top down</text>
+      <text x="22" y="374" font-size="11">approves, edits or writes each reply</text>
+      <text x="22" y="390" font-size="11">re-prioritises if the score is wrong</text>
+      <text x="22" y="406" font-size="11">every action is logged (who, when, what changed)</text>
+      <line x1="301" y1="370" x2="327" y2="370" stroke="#C27716" stroke-width="1.8" marker-start="url(#aa)" marker-end="url(#aa)"/>
+
+      <!-- ROW 4 -->
+      <rect x="10" y="462" width="300" height="88" rx="9" fill="#fff" stroke="#B9472F" stroke-width="1.6"/>
+      <text x="22" y="483" font-size="12.5" font-weight="700" fill="#B9472F">Outbox → customer</text>
+      <text x="22" y="501" font-size="11">written <tspan font-weight="700">only</tspan> by the Approve button</text>
+      <text x="22" y="517" font-size="11">the pipeline code has no send function</text>
+      <text x="22" y="533" font-size="11">no auto-approve, at any confidence</text>
+      <line x1="160" y1="422" x2="160" y2="460" stroke="#B9472F" stroke-width="1.8" marker-end="url(#ar)"/>
+      <text x="166" y="446" font-size="10" fill="#B9472F" font-weight="700">Approve</text>
+
+      <rect x="330" y="462" width="460" height="88" rx="9" fill="#E9F1F2" stroke="#9DB7BC" stroke-width="1.5"/>
+      <text x="342" y="483" font-size="12.5" font-weight="700" fill="#0E4A55">Run report (report.md + report.json), every batch</text>
+      <text x="342" y="501" font-size="11">processed · Ready / Needs you, by reason · per team · P1 / P2 / P3</text>
+      <text x="342" y="517" font-size="11">oldest open ticket · LLM calls, tokens, time · provider + model used</text>
+      <text x="342" y="533" font-size="11" font-weight="700">sent without approval = 0 (checked every run)</text>
+      <line x1="560" y1="438" x2="560" y2="460" stroke="#16606D" stroke-width="1.8" marker-end="url(#ar)"/>
+    </svg>
+
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div class="card">
+        <h2><span class="n">④</span>Decision rules: first match wins</h2>
+        <div class="rule"><span class="k">1</span><span><b>Customer asks for a human</b> (LLM flag OR phrase list: <bdi dir="rtl">اريد موظف، مو روبوت</bdi>) → Needs you, no AI draft</span></div>
+        <div class="rule"><span class="k">2</span><span><b>Suspected prompt injection</b> → Needs you, draft suppressed</span></div>
+        <div class="rule"><span class="k">3</span><span><b>Fraud, account takeover, legal threat</b> → Needs you "sensitive"</span></div>
+        <div class="rule"><span class="k">4</span><span><b>Confidence &lt; τ</b>, the two models disagree, LLM error, two issues in one ticket, P1 with no ref, Kurdish → Needs you + reason</span></div>
+        <div class="rule"><span class="k g">5</span><span>Otherwise → team from routing.yaml, ⑤ prepares a draft</span></div>
+      </div>
+      <div class="card">
+        <h2><span class="n">③</span>Priority score: readable, not the model's opinion</h2>
+        <p>The LLM <b>extracts facts</b>; code adds the points:<br>
+        category 5–35 · amount (≥250k +10, ≥1M +20, ≥5M +30) · money stuck (&gt;24h +10, &gt;72h +15) · still reversible (wrong recipient &lt;24h) +15 · fraud +40 · repeat contact +10 · asked for human +10 · +1 per hour waiting (max 15).<br>
+        <b>≥ 60 P1 · 35–59 P2 · &lt; 35 P3</b>. The breakdown is shown on every ticket.</p>
+      </div>
+      <div class="card w">
+        <h2><span class="n">→</span>One ticket, end to end</h2>
+        <div class="tk ar">هلو، حولت مليون ونص لاخوي امس الساعة ٩ بالليل ورقم العملية 8823419 وللحد الآن ما وصلته، شنو الحل؟</div>
+        <p class="mono" style="line-height:1.5">② failed_transfer · conf 0.93 · 1,500,000 IQD<br>&nbsp;&nbsp;&nbsp;ref 8823419 · 2026-10-19 21:00 · to: brother<br>③ 30 cat + 20 amount + 10 stuck &gt;24h = 60 → P1<br>④ Payments Ops → <span class="chip cA">Ready to approve</span></p>
+        <div class="tk ar">هلا بيك. راجعنا حوالتك رقم 8823419 بمبلغ مليون ونص دينار. الحوالة هسه قيد المتابعة ويا فريق المدفوعات وراح نرجعلك خلال [[المدة]]. آسفين على التأخير.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Aaws Oday Tami · Project Cerberus · Topic 06 Support Pipeline Automation · github.com/aaws424/Project_Cerberus</span><span>2 / 5</span></div>
+</section>
+
+<!-- ============================================================ 3. MODELS, TOOLS, DATA -->
+<section class="slide s3">
+  <div class="head">
+    <div>
+      <span class="tag">DESIGN BRIEF · 3 / 5 · MODELS, TOOLS &amp; DATA</span>
+      <h1>Free models behind one function, and <em>synthetic data built facts-first</em></h1>
+    </div>
+    <div class="headr"><b>Every provider and model is logged per run</b><br>and listed in DISCLOSURE.md</div>
+  </div>
+
+  <div class="g2" style="grid-template-columns:640px 1fr">
+    <div>
+      <h2><span class="n">1</span>Models: starting choices, confirmed by a dev-set comparison in week 2</h2>
+      <table>
+        <tr><th style="width:150px">Job</th><th style="width:150px">Model · provider</th><th>Why</th><th style="width:118px">Fallback</th></tr>
+        <tr><td class="tg">② Understand: classify, extract, flags</td><td><b>GPT-OSS-120B</b> · Groq</td><td>Fast, ~30 requests/min free, reliable JSON output</td><td>Llama 3.3 70B · Groq</td></tr>
+        <tr><td class="tg">Second opinion on confidence</td><td><b>Gemini Flash-Lite</b> · Google AI Studio</td><td>A different model family classifies again when confidence is borderline; disagreement → Needs you</td><td>Qwen3-32B · Groq</td></tr>
+        <tr><td class="tg">⑤ Drafts and how-to answers in Iraqi dialect</td><td><b>Gemini Flash-Lite</b></td><td>Strongest Arabic among the free options; ~500 requests/day</td><td>Llama 3.3 70B · Groq</td></tr>
+        <tr><td class="tg">Quality spot-checks</td><td><b>Gemini Flash</b></td><td>Stronger model for sampled draft reviews (~20/day)</td><td>human raters</td></tr>
+        <tr><td class="tg">Synthetic data generation</td><td><b>Mistral</b> (free mode)</td><td>Large monthly token allowance suits batch generation</td><td>Gemini Flash-Lite</td></tr>
+        <tr><td class="tg">Manual search</td><td><b>BM25</b> (rank-bm25) on normalised Arabic</td><td>25 articles: keyword search is enough. BGE-M3 embeddings only if BM25 misses the target</td><td>BGE-M3</td></tr>
+        <tr><td class="tg">Offline tests, demo backup</td><td><b>Qwen</b> (small) · Ollama</td><td>Unlimited local runs, works without internet</td><td>—</td></tr>
+      </table>
+      <div class="card" style="margin-top:8px;padding:8px 11px">
+        <b>llm.py</b>: one OpenAI-compatible function, so switching provider changes only the base URL and key. Responses are cached on disk by (prompt version + input hash), so re-runs are free and repeatable. A 429 error → exponential backoff → the next provider. Keys live in a git-ignored <span class="mono">.env</span>. <span class="muted">Anthropic has no free API tier, so Claude is used only as the coding assistant (Claude Code), and that is disclosed.</span>
+      </div>
+      <h2 style="margin-top:9px"><span class="n">2</span>Tools</h2>
+      <p>Python 3.12 · <b>Pydantic</b> (output schemas) · <b>Typer</b> (CLI: <span class="mono">run / eval / admin</span>) · <b>SQLite</b> (queue + audit log) · <b>Streamlit</b> (admin page, Arabic RTL) · <b>CAMeL Tools</b> (Arabic normalisation) · <b>rank-bm25</b> · <b>Faker</b> · <b>promptfoo</b> (compare prompts and models on dev) · <b>pytest</b> + GitHub Actions · <b>gitleaks</b> (no keys in the repo).</p>
+    </div>
+
+    <div>
+      <h2><span class="n">3</span>Synthetic data: code writes the facts, the LLM writes the words</h2>
+      <div class="steps">
+        <div class="st"><span class="num">1</span><div><b class="t">Spec.</b> Category list, 6 personas (student, shop owner, older user typing via a relative, angry repeat customer, office worker, rural cash-out customer), 3 channels, a list of noise types, and a dialect style guide (<span class="mono">data/STYLE_GUIDE.md</span>).</div></div>
+        <div class="st"><span class="num">2</span><div><b class="t">Facts by code, before any text.</b> Python + Faker pick the ground truth: category, amount (IQD/USD), ref, date, 07xx number (075/077/078/079), agent, which fields are missing, flags, priority. <b>Labels are exact by construction.</b></div></div>
+        <div class="st llm"><span class="num">3</span><div><b class="t">LLM writes the ticket.</b> Mistral turns each fact sheet into a customer message in Iraqi dialect with the requested noise: typos, Arabizi, English mixed in, amounts in words (<bdi dir="rtl">مليون ونص</bdi>), missing details, anger, two issues at once.</div></div>
+        <div class="st"><span class="num">4</span><div><b class="t">Automatic checks.</b> Every non-missing fact must appear in the text (parsed back), dialect markers present (not pure MSA), no near-duplicates, sensible length. A failure → regenerate.</div></div>
+        <div class="st hum"><span class="num">5</span><div><b class="t">Human QA.</b> I read every 5th ticket and rewrite anything that sounds translated. A second native speaker rates 40 tickets for realism (1–5); the scores are published.</div></div>
+        <div class="st"><span class="num">6</span><div><b class="t">Split and freeze.</b> 400 generated → <b>≥ 300 kept</b> → dev 50% · test 25% · held-out 25%. Hashes are committed; generator seed and prompts are saved so the data can be reproduced.</div></div>
+      </div>
+      <p style="margin:6px 0 4px"><b>Planned mix:</b> all 10 categories · ~30 "I want a human" · ~50 how-to (10 the manual can't answer) · ~30 injection attempts · ≥ 15% edge cases (no details, MSA / English / Kurdish). Plus a synthetic 25-article app manual.</p>
+      <div class="json"><span class="k">"text"</span>: <span class="s">"هلو اخي حولت ٥٠٠ الف لرقم غلط امس ومحد دا يرد، شسوي؟"</span>,
+<span class="k">"label"</span>: {<span class="k">"category"</span>: <span class="s">"wrong_recipient"</span>, <span class="k">"priority"</span>: <span class="s">"P1"</span>, <span class="k">"amount"</span>: 500000,
+  <span class="k">"currency"</span>: <span class="s">"IQD"</span>, <span class="k">"ref"</span>: null, <span class="k">"date"</span>: <span class="s">"2026-10-19"</span>, <span class="k">"human_requested"</span>: false}</div>
+      <h2 style="margin-top:9px"><span class="n">4</span>Output contract of ② (Pydantic-checked; invalid → retry once → Needs you)</h2>
+      <div class="json"><span class="k">{"intent"</span>: <span class="s">"issue"</span>, <span class="k">"category"</span>: <span class="s">"failed_transfer"</span>, <span class="k">"confidence"</span>: 0.93,
+ <span class="k">"fields"</span>: {<span class="k">"amount"</span>: {<span class="k">"value"</span>: 1500000, <span class="k">"currency"</span>: <span class="s">"IQD"</span>, <span class="k">"quote"</span>: <span class="s">"مليون ونص"</span>},
+            <span class="k">"ref"</span>: {<span class="k">"value"</span>: <span class="s">"8823419"</span>, <span class="k">"quote"</span>: <span class="s">"رقم العملية 8823419"</span>}, <span class="k">"date"</span>: …},
+ <span class="k">"flags"</span>: {<span class="k">"human_requested"</span>: false, <span class="k">"fraud"</span>: false, <span class="k">"instruction_like_text"</span>: false}}</div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Aaws Oday Tami · Project Cerberus · Topic 06 Support Pipeline Automation · github.com/aaws424/Project_Cerberus</span><span>3 / 5</span></div>
+</section>
+
+<!-- ============================================================ 4. TEST PLAN -->
+<section class="slide s4">
+  <div class="head">
+    <div>
+      <span class="tag">DESIGN BRIEF · 4 / 5 · TEST PLAN</span>
+      <h1>What a good result looks like, and <em>how we measure it</em></h1>
+    </div>
+    <div class="headr"><b>Numbers on data the pipeline never saw, not a demo</b><br>Every result is tagged with model + prompt version</div>
+  </div>
+
+  <div class="split">
+    <div class="s1"><b>≥ 300</b>tickets kept after QA</div>
+    <div class="s2"><b>Dev · 150</b>all tuning happens here: prompts, threshold τ, priority weights, model choice</div>
+    <div class="s3"><b>Test · 75</b>first results at the MVP (08/11)</div>
+    <div class="s4"><b>Held-out · 75</b>hash committed now, opened once for the progress review, never tuned on</div>
+  </div>
+
+  <div class="g2" style="grid-template-columns:770px 1fr">
+    <table>
+      <tr><th style="width:120px">Area</th><th>Measure</th><th style="width:150px">Good result</th></tr>
+      <tr><td class="tg">Classification</td><td>Accuracy, macro-F1, full confusion matrix</td><td><b>acc ≥ 0.88 · F1 ≥ 0.85</b></td></tr>
+      <tr><td class="tg">Baseline</td><td>A simple keyword classifier on the same split. The LLM has to beat it clearly to justify itself</td><td><b>gap reported</b></td></tr>
+      <tr><td class="tg">Confidence</td><td>Calibration curve (is "0.9" right ~90% of the time?), ECE; accuracy of tickets <i>not</i> escalated</td><td><b>ECE &lt; 0.10 · ≥ 0.95</b></td></tr>
+      <tr><td class="tg">Escalation</td><td>Share sent to Needs you, the reason mix, and how many of them really were hard or wrong</td><td><b>≤ 25% of tickets</b></td></tr>
+      <tr><td class="tg">Priority</td><td>Band accuracy; <b>P1 recall</b> (a missed urgent ticket is the costly error)</td><td><b>P1 recall ≥ 0.95</b></td></tr>
+      <tr><td class="tg">Extraction</td><td>Exact match per field: ref, amount (parsed), date (normalised), phone</td><td><b>F1 ≥ 0.90 ref &amp; amount</b></td></tr>
+      <tr><td class="tg">"I want a human"</td><td>Recall on the ~30 request tickets, including indirect wording</td><td><b>≥ 0.98</b></td></tr>
+      <tr><td class="tg">How-to answers</td><td>Correct manual section found (top-1); unanswerable questions escalated</td><td><b>≥ 0.90 · ≥ 0.90</b></td></tr>
+      <tr><td class="tg">Drafts</td><td>30 drafts rated blind by 2–3 native speakers: send as-is / minor edit / rewrite / wrong</td><td><b>≥ 70% as-is or minor</b></td></tr>
+      <tr><td class="tg">Injection</td><td>Attacks that change the output (label, draft, escalation) · false alarms on normal tickets</td><td><b>0 · ≤ 3%</b></td></tr>
+      <tr><td class="tg">Safety invariants</td><td>Numbers in a draft that are not in the ticket · replies that left without an approval record</td><td><b>0 · 0</b></td></tr>
+      <tr><td class="tg">Throughput</td><td>Tickets/minute, LLM calls and tokens per ticket, handled vs escalated and why</td><td><b>reported every run</b></td></tr>
+    </table>
+
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div class="card">
+        <h2><span class="n">1</span>How we measure</h2>
+        <ul>
+          <li><b><span class="mono">eval.py</span></b>, one command: runs the pipeline on a split, compares against the labels, and writes <span class="mono">docs/EVALUATION.md</span> (tables, confusion matrix, calibration plot)</li>
+          <li><b>promptfoo</b> compares prompt versions and models, on dev only</li>
+          <li><b>Human ratings:</b> raters see the ticket and the draft, never the model or its confidence; we report how often raters agree</li>
+          <li><b>Unit tests</b> for every rule, the priority formula, the validator and the "no send path" check</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2><span class="n">2</span>Robustness checks</h2>
+        <ul>
+          <li>New tickets written by hand, as judges will do</li>
+          <li>429 errors, timeouts and broken JSON injected mid-batch: the batch must still finish</li>
+          <li>A 500-ticket run; the same input gives the same output (cache)</li>
+        </ul>
+      </div>
+      <div class="card w">
+        <h2><span class="n">3</span>Confusion cases we will write up</h2>
+        <p>failed transfer ↔ wrong recipient (both "the money didn't arrive") · login ↔ OTP · how-to ↔ fee question · <bdi dir="rtl">رصيد</bdi> = wallet balance or phone credit. Each comes with examples and what would have resolved it.</p>
+      </div>
+      <div class="card">
+        <h2><span class="n">4</span>Rules we hold ourselves to</h2>
+        <ul>
+          <li>Never tune on test or held-out; held-out is opened once</li>
+          <li>Failures are listed with ticket IDs, not hidden</li>
+          <li>Results stay honest about being on synthetic data only</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Aaws Oday Tami · Project Cerberus · Topic 06 Support Pipeline Automation · github.com/aaws424/Project_Cerberus</span><span>4 / 5</span></div>
+</section>
+
+<!-- ============================================================ 5. RISKS + PLAN -->
+<section class="slide s5">
+  <div class="head">
+    <div>
+      <span class="tag">DESIGN BRIEF · 5 / 5 · RISKS &amp; PLAN</span>
+      <h1>What could go wrong, and <em>week by week to the MVP</em> (08/11)</h1>
+    </div>
+    <div class="headr"><b>Simple and reliable first</b><br>MVP = command line + queue; the web page comes after</div>
+  </div>
+
+  <div class="g2" style="grid-template-columns:600px 1fr">
+    <div>
+      <h2><span class="n">1</span>Main risks and what we do about them</h2>
+      <table class="risk">
+        <tr><th>Risk</th><th>Handling</th></tr>
+        <tr><td>Free-tier limits or provider outage mid-run or mid-demo</td><td>Cache, backoff, provider chain Groq → Gemini → Ollama. The demo uses a cached batch plus a few live tickets. Organisers told early if needed</td></tr>
+        <tr><td>Confident but wrong (dialect ambiguity, e.g. <bdi dir="rtl">رصيد</bdi>)</td><td>τ tuned on dev; second-model agreement on borderline tickets; a human approves every reply anyway</td></tr>
+        <tr><td>Prompt injection (OWASP LLM01)</td><td>Scanner; ticket wrapped in random-nonce data tags; LLM has no tools and cannot send; output validator + canary token; 30-ticket red-team set</td></tr>
+        <tr><td>Invented ref, amount or manual step</td><td>Every number in a draft must be in the extracted facts; manual answers must cite a real section. Otherwise → Needs you</td></tr>
+        <tr><td>Missed "talk to a human"</td><td>Two detectors, OR-ed and tuned for recall. The ticket still reaches a person before any reply</td></tr>
+        <tr><td>Synthetic tickets too clean or sound translated</td><td>Facts-first generator with deliberate noise, native-speaker QA, interview phrasing. "Synthetic only" stated as a limitation</td></tr>
+        <tr><td>Priority weights wrong in edge cases</td><td>Fraud always lands in P1; agents' re-prioritisations are logged; weights live in YAML</td></tr>
+        <tr><td>Free tiers may train on prompts; keys could leak</td><td>Synthetic data only; <span class="mono">.env</span> is git-ignored; gitleaks runs in CI</td></tr>
+        <tr><td>Too much scope for 2.5 weeks</td><td>MVP is CLI + CSV/SQLite queue. Web page, second model and weekly report come after the MVP</td></tr>
+      </table>
+    </div>
+
+    <div>
+      <h2><span class="n">2</span>Week-by-week plan up to the MVP</h2>
+      <div class="weeks">
+        <div class="wk"><div class="d">Week 0<span>20 – 22 Oct</span></div><div>Design brief submitted · repo public with roadmap · Groq, Gemini and Mistral keys in <span class="mono">.env</span> · 2–3 support-staff interviews booked
+          <div class="exit">Exit: brief in, keys working</div></div></div>
+        <div class="wk"><div class="d">Week 1<span>23 – 29 Oct</span><span>Data &amp; foundations</span></div><div>Interviews → update categories and priority weights · style guide + 25-article app manual · facts-first generator → 400 tickets → QA → <b>split and freeze</b> · repo skeleton: <span class="mono">llm.py</span> (cache, backoff, 3 providers), schemas, YAML config, CI
+          <div class="exit">Exit: dataset frozen and hashed; llm.py works with every provider</div></div></div>
+        <div class="wk"><div class="d">Week 2<span>30 Oct – 5 Nov</span><span>Core pipeline</span></div><div>Guard (normalise, regex, injection + "human" scan) · understand prompt · priority + policy + routing with unit tests · drafts + BM25 manual answers + validator · SQLite queue with CLI approve · run report · tune on dev only · keyword baseline · promptfoo model comparison
+          <div class="exit">Exit: one command runs all 150 dev tickets end to end</div></div></div>
+        <div class="wk mvp"><div class="d">Week 3<span>6 – 8 Nov</span><span>MVP</span></div><div>Run on the test split · <span class="mono">eval.py</span> first results · one-page update (what works, what doesn't, what's next) · rehearse the demo · <b>submit 08/11</b>
+          <div class="exit">MVP = batch in → queue + run report + first test numbers out; nothing sent without Approve</div></div></div>
+      </div>
+      <div class="card" style="margin-top:8px;padding:8px 11px">
+        <b>After the MVP</b> (progress review and Demo Day): Streamlit admin page in Arabic · second-model agreement · red-team hardening · <span class="mono">FAILURE_MODES.md</span> + <span class="mono">DISCLOSURE.md</span> · held-out run, once · <i>stretch:</i> weekly pattern report (rising issues, tickets that share a root cause).<br>
+        <b>If late, cut in this order:</b> weekly report → web page (CLI stays) → second model → relative dates → LLM drafts for P3 (templates).
+      </div>
+    </div>
+  </div>
+
+    <div class="tl">
+    <div class="tli done"><b>20 Oct</b>Kickoff pack received</div>
+    <div class="tli now"><b>22 Oct</b>Design brief (this document)</div>
+    <div class="tli"><b>TBC</b>Meet &amp; greet, Espresso Lab</div>
+    <div class="tli key"><b>08 Nov · MVP</b>Core end to end · repo history · first test results · one-page update · 20-min session</div>
+    <div class="tli"><b>TBC · Progress review</b>Live app on judge input · held-out results · ≥ 3 failure modes · full disclosure</div>
+    <div class="tli"><b>TBC · Demo Day</b>Live demo + Q&amp;A, one unexpected judge input · final repo + one-page summary</div>
+  </div>
+  <div class="foot"><span>Aaws Oday Tami · Project Cerberus · Topic 06 Support Pipeline Automation · github.com/aaws424/Project_Cerberus</span><span>5 / 5</span></div>
+</section>
+
+</body>
+</html>
