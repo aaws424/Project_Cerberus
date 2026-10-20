@@ -1,0 +1,251 @@
+# Ticket categories for Nakhla Wallet (a fictional Iraqi mobile wallet used for all synthetic data).
+#
+#   team            where a routed ticket goes (see `teams`)
+#   base_points     starting priority points (priority.yaml adds the rest)
+#   money_at_stake  true if "how long the money has been stuck" counts towards priority
+#   description     shown to the LLM in the understand prompt
+#   keywords        hints for the offline rules mode, which is also the keyword baseline.
+#                   Written in natural spelling; folded (أ→ا, ة→ه, گ→ك, چ→ج, Arabic digits → 0-9)
+#                   at load time. Weight = how strongly the phrase points to this category.
+#                   Each phrase counts once per ticket. Latin phrases match whole words only.
+
+teams:
+  payments_ops:     {ar: فريق المدفوعات, en: Payments Ops}
+  disputes:         {ar: فريق النزاعات, en: Disputes}
+  agent_network:    {ar: شبكة الوكلاء, en: Agent network}
+  cards:            {ar: فريق البطاقات, en: Cards}
+  account_security: {ar: أمن الحسابات, en: Account security}
+  tier1:            {ar: الدعم العام, en: Tier-1}
+  compliance:       {ar: الامتثال والتوثيق, en: Compliance}
+  supervisor:       {ar: المشرف, en: Supervisor}
+
+categories:
+  failed_transfer:
+    ar: حوالة ما وصلت
+    en: Failed transfer
+    team: payments_ops
+    base_points: 30
+    money_at_stake: true
+    description: Money was sent or debited but the recipient did not receive it, or the transfer is stuck or pending.
+    keywords:
+      "حولت": 1.0
+      "دزيت": 1.0
+      "حوالة": 1.0
+      "ما وصل": 2.0
+      "ما استلم": 2.0
+      "لم يتم استلام": 2.0
+      "لم تصل": 2.0
+      "معلقة": 1.5
+      "قيد المعالجة": 1.5
+      "pending": 1.5
+      "not received": 2.0
+      "didn't arrive": 2.0
+      "never arrived": 2.0
+      "transfer": 1.0
+      "ma wasal": 2.0
+      "7awalt": 1.0
+      "hawalt": 1.0
+      "mablagh": 1.0
+
+  wrong_recipient:
+    ar: حوالة لرقم غلط
+    en: Wrong recipient
+    team: disputes
+    base_points: 35
+    money_at_stake: true
+    description: The customer sent money to the wrong number or person by mistake and wants it back.
+    keywords:
+      "رقم غلط": 3.0
+      "للرقم الغلط": 3.0
+      "غلطت بالرقم": 3.0
+      "بالغلط": 2.0
+      "لغير واحد": 2.0
+      "واحد ما اعرفه": 2.0
+      "شخص ثاني": 1.5
+      "ارجعهن": 1.0
+      "ترجعولي فلوسي": 1.0
+      "بدل": 0.5
+      "wrong number": 3.0
+      "wrong person": 3.0
+      "wrong recipient": 3.0
+      "by mistake": 2.0
+      "ghalat": 2.0
+
+  agent_dispute:
+    ar: مشكلة ويا وكيل
+    en: Agent dispute
+    team: agent_network
+    base_points: 30
+    money_at_stake: true
+    description: A dispute with a cash-in / cash-out agent, e.g. the agent did not hand over the full amount.
+    keywords:
+      "وكيل": 3.0
+      "ما سلمني": 2.0
+      "سلمني": 1.0
+      "سحب نقدي": 1.5
+      "المكتب": 1.0
+      "agent": 2.5
+      "cash out": 1.0
+
+  card_issue:
+    ar: مشكلة بالبطاقة
+    en: Card issue
+    team: cards
+    base_points: 20
+    money_at_stake: true
+    description: Problems with the wallet's payment card, e.g. declined, blocked, not delivered, unknown card charge.
+    keywords:
+      "بطاقة": 2.5
+      "طلبت بطاقة": 2.0
+      "كارت": 2.0
+      "ماستر": 2.0
+      "فيزا": 2.0
+      "الصراف": 2.0
+      "card": 2.5
+      "card blocked": 2.0
+      "atm": 2.0
+      "pin wrong": 1.0
+
+  bill_payment:
+    ar: مشكلة بدفع فاتورة
+    en: Bill payment issue
+    team: payments_ops
+    base_points: 20
+    money_at_stake: true
+    description: A bill payment or mobile top-up that failed, was charged twice, or was not credited.
+    keywords:
+      "فاتورة": 2.5
+      "الكهرباء": 1.5
+      "الانترنت": 1.0
+      "الماء": 1.0
+      "شحنت رصيد": 2.5
+      "شحن رصيد": 2.5
+      "شحنت": 1.0
+      "اسياسيل": 1.5
+      "كورك": 1.5
+      "رقم الوصل": 1.5
+      "انحسبت": 1.5
+      "مدفوعة": 1.5
+      "bill": 2.5
+      "top up": 2.0
+      "top-up": 2.0
+      "recharge": 2.0
+
+  login_problem:
+    ar: مشكلة بتسجيل الدخول
+    en: Login problem
+    team: account_security
+    base_points: 20
+    money_at_stake: false
+    description: The customer cannot log in, forgot the password, or the account is locked.
+    keywords:
+      "ما يفتح": 2.0
+      "تسجيل الدخول": 3.0
+      "ما اكدر ادخل": 3.0
+      "ما اقدر ادخل": 3.0
+      "مقفول": 2.0
+      "انقفل": 2.0
+      "كلمة السر": 2.0
+      "الباسورد": 2.0
+      "غير الرمز": 1.0
+      "log in": 3.0
+      "login": 3.0
+      "session expired": 2.5
+      "password": 2.0
+
+  otp_not_received:
+    ar: رمز التحقق ما يوصل
+    en: OTP not received
+    team: account_security
+    base_points: 15
+    money_at_stake: false
+    description: The verification code (OTP / SMS code) does not arrive.
+    keywords:
+      "رمز التحقق": 3.0
+      "كود التحقق": 3.0
+      "الكود": 1.5
+      "الرمز ما": 2.0
+      "رسالة التفعيل": 2.5
+      "ما يوصلني": 1.0
+      "مسج": 1.5
+      "otp": 3.0
+      "verification code": 3.0
+      "sms": 1.5
+
+  balance_or_fee:
+    ar: استفسار عن الرصيد أو العمولة
+    en: Balance or fee question
+    team: tier1
+    base_points: 10
+    money_at_stake: false
+    description: Questions about the balance, a deduction, a fee or commission that the customer does not understand.
+    keywords:
+      "رصيدي": 2.0
+      "الرصيد": 1.5
+      "انقص": 1.5
+      "نقص": 1.0
+      "عمولة": 2.0
+      "رسوم": 2.0
+      "استقطاع": 2.0
+      "انخصم": 1.0
+      "شكد": 1.0
+      "fee": 2.0
+      "balance": 2.0
+      "charge": 1.5
+
+  kyc_verification:
+    ar: توثيق الحساب
+    en: KYC verification
+    team: compliance
+    base_points: 10
+    money_at_stake: false
+    description: Identity verification (KYC) is pending, rejected, or the ID photo upload fails.
+    keywords:
+      "توثيق": 3.0
+      "توثق": 3.0
+      "الهوية": 2.0
+      "البطاقة الوطنية": 3.0
+      "جواز": 2.0
+      "سيلفي": 2.0
+      "الصورة غير واضحة": 2.5
+      "ارفع": 0.5
+      "kyc": 3.0
+      "selfie": 2.0
+      "verify my account": 3.0
+
+  how_to_question:
+    ar: سؤال شلون أسوي
+    en: How-to question
+    team: tier1
+    base_points: 5
+    money_at_stake: false
+    description: A "how do I ..." question about using the app, with no problem reported. Answered from the app manual.
+    keywords:
+      "شلون": 2.0
+      "كيف": 2.0
+      "شنو الطريقة": 2.5
+      "اريد اعرف": 1.5
+      "هل اكدر": 1.5
+      "من وين": 1.0
+      "وين القى": 1.5
+      "how do i": 3.0
+      "how to": 3.0
+      "how can i": 3.0
+      "shlon": 2.0
+
+  unclear:
+    ar: غير واضح
+    en: Unclear
+    team: supervisor
+    base_points: 0
+    money_at_stake: false
+    description: Not enough information to tell what the issue is.
+    keywords: {}
+
+# A "how do I" cue with no complaint words is very likely a how-to question.
+how_to_boost:
+  points: 2.5
+  cues: ["شلون", "كيف", "how do i", "how to", "how can i", "shlon"]
+  complaint_cues: ["ما وصل", "انخصم", "انسحب", "خطا", "ما يشتغل", "ما دا", "مقفول", "غلط", "مشكلة",
+                   "ما اكدر", "ما يوصل", "نصب", "سرق", "ارجع", "ترجعولي",
+                   "not working", "didn't", "doesn't", "can't", "wrong", "blocked"]

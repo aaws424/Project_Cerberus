@@ -1,0 +1,122 @@
+# Step 1 (guard): pure-Python checks that run before any LLM call.
+# Phrases are written naturally and folded at load time (أ→ا, ة→ه, گ→ك, چ→ج ...).
+# Injection patterns are regular expressions applied to the folded, lower-cased text.
+
+max_chars: 2000
+
+human_request_phrases:
+  - "اريد موظف"
+  - "احچي ويا موظف"
+  - "احچي ويا شخص"
+  - "احچي ويا انسان"
+  - "احچي ويا بشر"
+  - "انسان حقيقي"
+  - "شخص حقيقي"
+  - "روبوت"
+  - "مو بوت"
+  - "رد آلي"
+  - "اريد المدير"
+  - "وين المدير"
+  - "اريد مسؤول"
+  - "حولوني على موظف"
+  - "خلي موظف"
+  - "من الموظفين يتصل"
+  - "اتصلوا بيه"
+  - "يتصل بيه"
+  - "talk to a human"
+  - "talk to a person"
+  - "real person"
+  - "human agent"
+  - "speak to someone"
+  - "speak to a person"
+  - "talk to someone"
+  - "not a bot"
+  - "agent please"
+  - "call me"
+  - "arid mowadaf"
+
+fraud_phrases:
+  - "نصب"
+  - "نصاب"
+  - "احتيال"
+  - "محتال"
+  - "سرقة"
+  - "سرقوا"
+  - "انسرق"
+  - "حرامي"
+  - "اخترق"
+  - "هكر"
+  - "تهكر"
+  - "دخل على حسابي"
+  - "بدون علمي"
+  - "بدون موافقتي"
+  - "scam"
+  - "hacked"
+  - "fraud"
+  - "stolen"
+  - "unauthorized"
+  - "without my permission"
+
+legal_phrases:
+  - "محامي"
+  - "محكمة"
+  - "اشتكي عليكم"
+  - "شكوى رسمية"
+  - "البنك المركزي"
+  - "دعوى"
+  - "lawyer"
+  - "court"
+  - "legal action"
+  - "central bank"
+
+abuse_phrases:
+  - "زبالة"
+  - "حرامية"
+  - "كلاب"
+  - "تفو"
+  - "يا حيوان"
+  - "idiots"
+  - "stupid"
+
+repeat_phrases:
+  - "ثالث مرة"
+  - "ثاني مرة"
+  - "رابع مرة"
+  - "كم مرة"
+  - "رجعت اراسلكم"
+  - "رجعت احچي"
+  - "صارلي اسبوع احچي"
+  - "محد يرد"
+  - "ما احد يرد"
+  - "ولا احد رد"
+  - "mahad yrid"
+  - "third time"
+  - "second time"
+  - "nobody replies"
+  - "no one answers"
+
+injection_patterns:
+  - 'ignore\s+(?:all\s+)?(?:the\s+|your\s+|any\s+)?(?:previous\s+|prior\s+|above\s+|earlier\s+)?(?:instructions|rules|prompts?|messages?)'
+  - 'disregard\s+(?:all\s+)?(?:the\s+|your\s+)?(?:previous\s+|prior\s+|above\s+)?(?:instructions|rules)'
+  - 'you\s+are\s+now\b'
+  - '\bact\s+as\s+(?:an?\s+|the\s+)?(?:admin|administrator|agent|system|supervisor|manager)'
+  - 'pretend\s+(?:to\s+be|you\s+are)'
+  - 'system\s*prompt'
+  - '(?:^|[\s.>])system\s*:'
+  - '<\s*/?\s*(?:system|assistant|instructions?|ticket[\w-]*)\s*>'
+  - '\[/?inst\]'
+  - '(?:mark|set|flag|record)\s+(?:this\s+|it\s+|the\s+|my\s+)?(?:ticket\s+|transfer\s+|case\s+)?(?:as\s+)?(?:refunded|resolved|approved|closed|completed|p1)\b'
+  - 'approve\s+(?:the\s+|my\s+|a\s+)?refund'
+  - 'classify\s+(?:this|it|the\s+ticket)\s+as'
+  - '(?:reveal|print|show|repeat)\s+(?:me\s+)?(?:your|the)\s+(?:system\s+)?(?:prompt|instructions)'
+  - 'reply\s+with\s+(?:this|the\s+following)'
+  - 'تجاهل\s+(?:كل\s+)?(?:ال)?(?:تعليمات|اوامر|قواعد)'
+  - 'انسى?\s+(?:كل\s+)?(?:ال)?(?:تعليمات|اوامر|قواعد)'
+  - 'انت\s+(?:هسه|الان|من\s+هسه)\s+(?:ال)?(?:مدير|ادمن|مشرف|موظف)'
+  - '(?:سجل|اعتبر)(?:ها|ه)?\s+(?:ال)?(?:حواله\s+|عمليه\s+|طلب\s+)?(?:مسترجعه|مكتمله|منتهيه|مرجعه|مدفوعه)'
+  - 'اكتب\s+(?:ب|في\s+)?(?:ال)?رد\b'
+  - '(?:اعطيني|اعطني|طلعلي|ورني)\s+(?:ال)?(?:تعليمات|برومبت)'
+  - 'tjahal\s+el?\s*ta3limat'
+
+kurdish_letters: "ڕڵێۆە"
+arabizi_words: ["ma", "wasal", "mablagh", "akhi", "shlon", "sar", "ayam", "alf", "arid", "hisab", "kashf", "mahad", "yrid", "shako", "hwaya", "zain", "7awalt"]

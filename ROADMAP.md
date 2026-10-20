@@ -49,8 +49,8 @@ The product is a **batch pipeline with a run report**, not a chatbot. Success = 
 ### Mandatory gates (fail any = not scored)
 
 - [ ] Public GitHub repo with commit history spanning the build period (commit small, commit often)
-- [ ] Live run on judge-supplied input (`python -m cerberus run --in judges.jsonl`)
-- [ ] `DISCLOSURE.md` covering every model, library, data source and AI coding assistant
+- [ ] Live run on judge-supplied input (`python -m cerberus run --data judges.jsonl`, or paste a ticket into the console's ⚡ Live ticket tab)
+- [ ] `DISCLOSURE.md` covering every model, library, data source and AI coding assistant (started, kept up to date)
 - [ ] `FAILURE_MODES.md` with ≥ 3 documented failure modes and their handling (we target 10, see §7)
 
 ---
@@ -371,10 +371,10 @@ First results at the MVP are reported on the **test** split. Final results at th
   - what makes a ticket "hard"
   - how they decide what is urgent (this feeds the priority weights)
   - how often customers ask for a human
-- [x] Write the two slides → [`docs/slides/Cerberus_SupportPipeline.pdf`](docs/slides/Cerberus_SupportPipeline.pdf) (source: `docs/slides/slides.html`)
+- [x] Write the two slides → [`docs/slides/Aaws Oday Tami Support pipeline.pdf`](<docs/slides/Aaws Oday Tami Support pipeline.pdf>)
   - Slide 1: user, the 6-step workflow, one ticket walked through end to end, models / tools / data
   - Slide 2: test split + metric targets, 10 risks with handling, run-report format, cut order
-- [ ] Add your name, rename to `<YourName>_SupportPipeline.pdf`, submit at the Typeform link **by 28 Sep 2026**
+- [x] Submitted the two slides; selected for the build stage
 - [ ] Prepare to explain every decision in your own words (especially: why rules set priority, why nothing auto-sends, how τ is chosen)
 
 ### Week 0 · 20 – 22 Oct: design brief
@@ -388,20 +388,21 @@ First results at the MVP are reported on the **test** split. Final results at th
 
 ### Week 1 · 23 – 29 Oct: data and foundations
 - [ ] Interviews → update the categories and priority weights; write up `docs/USER_RESEARCH.md`
-- [ ] `data/STYLE_GUIDE.md` + the 25-article app manual (`docs/app_manual/`)
+- [ ] `data/STYLE_GUIDE.md` + the 25-article app manual (`docs/app_manual/`: 13 articles written so far)
 - [ ] Facts-first generator → 400 tickets → automatic checks → human QA (every 5th ticket + 40 rated by a second native speaker)
 - [ ] **Split and freeze** dev / test / held-out; commit the hashes
-- [ ] Repo skeleton: `llm.py` (cache, backoff, 3 providers), schemas, YAML config, CLI, CI with gitleaks
+- [x] Repo skeleton: `llm.py` (cache, backoff, fallback over 5 providers), schemas, YAML config, CLI, CI with gitleaks *(done early, 20 Oct)*
+- [x] Seed set: 53 hand-written labeled tickets covering every path (`data/seed/`, a smoke test, not the evaluation set)
 
 **Exit:** dataset frozen and hashed; `llm.py` works with every provider.
 
 ### Week 2 · 30 Oct – 5 Nov: core pipeline
-- [ ] Guard: normalise, regex pre-extraction, injection scanner, "human" phrase list, with unit tests
-- [ ] Understand prompt with structured output, confidence and flags
-- [ ] Priority + policy + routing, with a unit test for every rule
-- [ ] Drafts + BM25 manual answers + output validator
-- [ ] SQLite queue with CLI approve/reject; "no send path" test; run report
-- [ ] Tune on dev only; keyword baseline; promptfoo model comparison
+- [x] Guard: normalise, regex pre-extraction, injection scanner, "human" phrase list, with unit tests
+- [ ] Understand prompt with structured output, confidence and flags (written and tested against a fake provider; needs a real-model run)
+- [x] Priority + policy + routing, with unit tests
+- [x] Drafts + BM25 manual answers + output validator
+- [x] SQLite queue, "no send path" tests, run report, plus the Streamlit console (ahead of plan)
+- [ ] Tune on dev only; promptfoo model comparison (keyword baseline done: it is the offline rules mode)
 
 **Exit:** one command runs all 150 dev tickets end to end.
 
@@ -413,7 +414,7 @@ First results at the MVP are reported on the **test** split. Final results at th
 **MVP =** batch in → admin queue + run report + first test numbers out. Nothing is sent without Approve.
 
 ### After the MVP: progress review and Demo Day (dates TBC)
-- [ ] Streamlit admin page in Arabic (two lanes, sorted by score)
+- [x] Streamlit admin page in Arabic (two lanes, sorted by score) *(done early, 20 Oct)*
 - [ ] Second-model agreement on borderline tickets
 - [ ] Red-team hardening; robustness tests (outage, empty, duplicates, a 500-ticket run)
 - [ ] `FAILURE_MODES.md` (≥ 3, we target 10) and `DISCLOSURE.md`

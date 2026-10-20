@@ -1,0 +1,49 @@
+# Decision policy: which tickets go straight to a person ("Needs you") and why.
+# The rules below are checked in `order`; the first match wins. A ticket that matches none is
+# routed to its team with a prepared reply in "Ready to approve".
+# Either way, nothing is sent until a human presses Approve.
+
+confidence_threshold:      # tuned on the dev split only
+  llm: 0.70
+  rules: 0.60
+
+multi_issue:               # rules mode: a second category this strong means two issues in one ticket
+  min_points: 2.5          # (in LLM mode the model reports secondary_category itself)
+  ratio: 0.6
+
+missing_reference:         # urgent money tickets without a transaction reference
+  categories: [failed_transfer, wrong_recipient]
+  bands: [P1]
+
+unsupported_languages: [ku]
+
+manual:                    # how-to answers: BM25 search over docs/app_manual
+  min_score: 3.0           # below this, the manual does not cover the question -> "manual gap"
+  min_matched_terms: 2     # distinct query words that must appear in the best section
+                           # (and at least one must be in the section's title or keywords)
+
+order:
+  - human_requested
+  - suspected_injection
+  - sensitive
+  - llm_error
+  - unsupported_language
+  - unclear
+  - low_confidence
+  - multi_issue
+  - extraction_conflict
+  - missing_reference
+
+reasons:
+  human_requested:      {ar: "الزبون طلب يحچي ويا موظف", en: "Customer asked for a human"}
+  suspected_injection:  {ar: "نص مريب يحاول يوجّه النظام", en: "Suspected prompt injection"}
+  sensitive:            {ar: "حالة حساسة: احتيال أو تهديد قانوني أو إساءة", en: "Sensitive: fraud, legal threat or abuse"}
+  llm_error:            {ar: "تعذّر تحليل التذكرة بالنموذج", en: "LLM call failed"}
+  unsupported_language: {ar: "لغة غير مدعومة حالياً", en: "Unsupported language"}
+  unclear:              {ar: "ما واضح شنو المشكلة", en: "Issue unclear"}
+  low_confidence:       {ar: "ثقة التصنيف واطية", en: "Low classification confidence"}
+  multi_issue:          {ar: "أكثر من مشكلة بنفس التذكرة", en: "More than one issue in the ticket"}
+  extraction_conflict:  {ar: "تعارض بالمعلومات المستخرجة", en: "Extracted details conflict"}
+  missing_reference:    {ar: "حالة عاجلة بدون رقم عملية", en: "Urgent money case without a reference"}
+  manual_gap:           {ar: "السؤال مو موجود بدليل التطبيق", en: "Question not covered by the app manual"}
+  validator_failed:     {ar: "الرد المقترح ما عبر فحص الأمان", en: "Draft failed the safety validator"}
